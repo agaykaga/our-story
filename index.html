@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Our Story</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header>
+    <h1>To the One I Met in the Most Unexpected Way</h1>
+    <p>From Discord to real life, from strangers to soulmates. This is our story — raw, messy, honest… and always, always real.</p>
+    <a href="#start" class="btn-start">Scroll to Start ↓</a>
+  </header>
+
+  <div class="music-player">
+    <button id="music-toggle">Play Music 🎵</button>
+    <audio id="bg-music" loop>
+      <source src="music.mp3" type="audio/mpeg">
+      Your browser does not support the audio element.
+    </audio>
+  </div>
+
+  <main id="start">
+    <section class="fade-in">
+      <h2>May 4, 2021 — Where It All Began</h2>
+      <p>I saw your Discord name on Bumble. We didn’t even match — but I still added you. You messaged first. And that changed everything.</p>
+      <img src="compile/may4.png" alt="Discord conversation screenshot" class="image" />
+    </section>
+
+    <section class="fade-in">
+      <h2>June 4, 2021 — The First Effort</h2>
+      <p>You made me want to make things for someone again. So I made this — and so many more after.</p>
+      <img src="compile/effort.png" alt="Google form love letter screenshot" class="image" />
+    </section>
+
+    <section class="fade-in">
+      <h2>July 5, 2021 — We Made It Official</h2>
+      <p>We finally called it official. That day started something real — and I never stopped wanting to build more with you since.</p>
+    </section>
+
+    <section class="fade-in">
+      <h2>Jan 24, 2022 — First Meetup</h2>
+      <p>After months of talking, we met. You carried me — literally. SM Pampanga will never be the same.</p>
+      <div class="slideshow" style="position: relative; height: auto;">
+        <div class="slideshow-controls">
+            <button class="prev">← Prev</button>
+            <button class="next">Next →</button>
+          </div>
+        <img src="compile/first/1.jpg" class="slide active">
+        <img src="compile/first/2.jpg" class="slide">
+        <img src="compile/first/3.jpg" class="slide">
+        <img src="compile/first/4.jpg" class="slide">
+
+      </div>
+    </section>
+
+    <section class="fade-in">
+      <h2>Angeles Pampanga — Second Meetup</h2>
+      <p>We met again. Still nervous, still giddy, but it felt like home. We were getting closer to what we dreamed about.</p>
+      <div class="slideshow" style="position: relative; height: auto;">
+        <div class="slideshow-controls">
+            <button class="prev">← Prev</button>
+            <button class="next">Next →</button>
+          </div>
+        <img src="compile/second/1.jpg" class="slide active">
+        <img src="compile/second/2.jpg" class="slide">
+        <img src="compile/second/3.jpg" class="slide">
+        <img src="compile/second/5.jpg" class="slide">
+      </div>
+    </section>
+
+    <section class="fade-in">
+      <h2>Aurora Fest — Living Together</h2>
+      <p>We danced, we laughed, and we came home together. Because by then, we weren’t just visiting each other — we were building a life side by side.</p>
+      <div class="slideshow" style="position: relative; height: auto;">
+        <div class="slideshow-controls">
+            <button class="prev">← Prev</button>
+            <button class="next">Next →</button>
+          </div>
+        <img src="compile/aurora/1.jpg" class="slide active">
+        <img src="compile/aurora/2.jpg" class="slide">
+        <img src="compile/aurora/3.jpg" class="slide">
+        <img src="compile/aurora/4.jpg" class="slide">
+        <img src="compile/aurora/5.jpg" class="slide">
+        <img src="compile/aurora/6.jpg" class="slide">
+        <img src="compile/aurora/7.jpg" class="slide">
+        <img src="compile/aurora/8.jpg" class="slide">
+        <img src="compile/aurora/9.jpg" class="slide">
+      </div>
+    </section>
+
+    <section class="fade-in">
+      <h2>Where I Failed, Where I Hope</h2>
+      <p>I made mistakes. I hid something I shouldn't have. But every day after, I tried to show you how much I love you — through actions, time, honesty. I can’t undo the past, but I hope someday I can be part of your peace again.</p>
+    </section>
+
+    <section class="fade-in final">
+      No matter where we are now, this story will always mean everything to me. Thank you for writing it with me.
+    </section>
+  </main>
+
+  <script>
+    // Fade-in animation
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+        }
+      });
+    }, { threshold: 0.1 });
+
+    document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+
+    // Reveal slideshow on section click
+    document.querySelectorAll("section").forEach(section => {
+      section.addEventListener("click", () => {
+        section.classList.toggle("revealed");
+      });
+    });
+
+    // Manual slideshow logic with fade transition
+    document.querySelectorAll(".slideshow").forEach(slideshow => {
+      const slides = slideshow.querySelectorAll(".slide");
+      let current = 0;
+
+      function showSlide(index) {
+        slides.forEach((s, i) => {
+          s.classList.remove("active");
+        });
+        slides[index].classList.add("active");
+      }
+
+      slideshow.querySelector(".prev").addEventListener("click", e => {
+        e.stopPropagation();
+        current = (current - 1 + slides.length) % slides.length;
+        showSlide(current);
+      });
+
+      slideshow.querySelector(".next").addEventListener("click", e => {
+        e.stopPropagation();
+        current = (current + 1) % slides.length;
+        showSlide(current);
+      });
+
+      showSlide(current);
+    });
+
+    // Music toggle
+    const musicBtn = document.getElementById('music-toggle');
+    const bgMusic = document.getElementById('bg-music');
+    let isPlaying = false;
+
+    musicBtn.addEventListener('click', () => {
+      if (isPlaying) {
+        bgMusic.pause();
+        musicBtn.textContent = 'Play Music 🎵';
+      } else {
+        bgMusic.play();
+        musicBtn.textContent = 'Pause Music ⏸️';
+      }
+      isPlaying = !isPlaying;
+    });
+  </script>
+</body>
+</html>
