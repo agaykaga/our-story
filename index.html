@@ -124,48 +124,54 @@
         }
       });
     }, { threshold: 0.1 });
-
+  
     document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
-
+  
     // Reveal slideshow on section click
     document.querySelectorAll("section").forEach(section => {
-      section.addEventListener("click", () => {
-        section.classList.toggle("revealed");
+      section.addEventListener("click", e => {
+        // Only toggle if clicked outside slideshow buttons
+        if (!e.target.closest(".slideshow-controls")) {
+          section.classList.toggle("revealed");
+        }
       });
     });
-
-    // Manual slideshow logic with fade transition
+  
+    // Scoped slideshow logic per slideshow
     document.querySelectorAll(".slideshow").forEach(slideshow => {
-      const slides = slideshow.querySelectorAll(".slide");
+      const slides = Array.from(slideshow.querySelectorAll(".slide"));
       let current = 0;
-
-      function showSlide(index) {
-        slides.forEach((s, i) => {
-          s.classList.remove("active");
-        });
+  
+      const showSlide = (index) => {
+        slides.forEach(slide => slide.classList.remove("active"));
         slides[index].classList.add("active");
+      };
+  
+      const prev = slideshow.querySelector(".prev");
+      const next = slideshow.querySelector(".next");
+  
+      if (prev && next) {
+        prev.addEventListener("click", e => {
+          e.stopPropagation();
+          current = (current - 1 + slides.length) % slides.length;
+          showSlide(current);
+        });
+  
+        next.addEventListener("click", e => {
+          e.stopPropagation();
+          current = (current + 1) % slides.length;
+          showSlide(current);
+        });
+  
+        showSlide(current);
       }
-
-      slideshow.querySelector(".prev").addEventListener("click", e => {
-        e.stopPropagation();
-        current = (current - 1 + slides.length) % slides.length;
-        showSlide(current);
-      });
-
-      slideshow.querySelector(".next").addEventListener("click", e => {
-        e.stopPropagation();
-        current = (current + 1) % slides.length;
-        showSlide(current);
-      });
-
-      showSlide(current);
     });
-
+  
     // Music toggle
     const musicBtn = document.getElementById('music-toggle');
     const bgMusic = document.getElementById('bg-music');
     let isPlaying = false;
-
+  
     musicBtn.addEventListener('click', () => {
       if (isPlaying) {
         bgMusic.pause();
@@ -177,5 +183,6 @@
       isPlaying = !isPlaying;
     });
   </script>
+  
 </body>
 </html>
